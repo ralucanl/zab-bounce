@@ -1,0 +1,38 @@
+.light-dialog{
+    background-color: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    width: 100%;
+    overflow-y: auto;
+    z-index: 5000;
+    height: 100%;
+    color: #000;
+}
+.light-dialog .content {margin:0;}
+.dialbody, .popup_content{
+    width: 70%;
+    min-width: 23em;
+    background-color: rgb(245, 240, 240);
+    margin: 44px auto;
+    border-radius: 10px;
+}
+
+.light-dialog .header {
+    background: none;
+    border: none;
+    padding: 0.5em;
+    width: auto;
+    color: black;
+}
+.light-dialog .header h1 {
+    border-bottom: 2px inset #9cba5a;
+}
+
+.light-dialog .dial_buttons, .popup_content .dial_buttons{ padding: 0.5em; text-align: center;}
+.light-dialog .dial_buttons .button, .popup_content .button {
+    display: inline-block;
+    width: 49%;
+    padding: 0.8em 0px;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 0.3em;
+}
