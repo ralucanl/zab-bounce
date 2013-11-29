@@ -2,13 +2,13 @@
 <widget id="com.zaboca.bounce" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>ZabocaBounce</name>
     <description>
-        A sample Apache Cordova application that responds to the deviceready event.
+         A test application that responds to the deviceready event.
     </description>
-    <author email="dev@callback.apache.org" href="http://cordova.io">
-        Apache Cordova Team
+    <author email="dorin@nextlogic.ro" href="http://www.nextlogic.ro">
+         team
     </author>
     <content src="index.html" />
-    <access uri="http://bounce.dev.nextlogic.ro/zaboca" subdomains="true" />
+    <access origin="*" />
     <preference name="fullscreen" value="true" />
     <preference name="webviewbounce" value="true" />
 </widget>
