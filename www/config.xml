@@ -1,14 +1,42 @@
-<?xml version='1.0' encoding='utf-8'?>
+
 <widget id="com.zaboca.bounce" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>ZabocaBounce</name>
+    <name>Bounce</name>
     <description>
-         A test application that responds to the deviceready event.
+        A sample Apache Cordova application that responds to the deviceready event.
     </description>
-    <author email="dorin@nextlogic.ro" href="http://www.nextlogic.ro">
-         team
+    <author email="dev@callback.apache.org" href="http://cordova.io">
+        Apache Cordova Team
     </author>
     <content src="index.html" />
-    <access origin="*" />
+   
+    
+    
+    <preference name="permissions" value="none" />
+    <preference name="orientation" value="default" />
+    <preference name="target-device" value="universal" />
     <preference name="fullscreen" value="true" />
     <preference name="webviewbounce" value="true" />
+    <preference name="prerendered-icon" value="true" />
+    <preference name="stay-in-webview" value="false" />
+    <preference name="ios-statusbarstyle" value="black-opaque" />
+    <preference name="detect-data-types" value="true" />
+    <preference name="exit-on-suspend" value="false" />
+    <preference name="show-splash-screen-spinner" value="true" />
+    <preference name="auto-hide-splash-screen" value="true" />
+    <preference name="disable-cursor" value="false" />
+    <preference name="android-minSdkVersion" value="7" />
+    <preference name="android-installLocation" value="auto" />
+    
+    
+   <!-- <access uri="http://www.address1.com" subdomains="true">
+        <feature id="blackberry.app" required="true" version="1.0.0"/>
+        <feature id="blackberry.invoke" required="true" version="1.0.0"/>
+    </access>
+    <access uri="http://www.address2.com" subdomains="true">
+        <feature id="blackberry.app" required="true" version="1.0.0"/>
+        <feature id="blackberry.invoke" required="true" version="1.0.0"/>
+    </access> -->
+    <icon src="icon.png" />
+    
+    <access uri="http://bounce.dev.nextlogic.ro/zaboca" subdomains="true" />
 </widget>

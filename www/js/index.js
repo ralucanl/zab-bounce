@@ -1,49 +1,109 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
-var app = {
-    // Application Constructor
+var app = {//homePage - HomeView, loginPage - LoginView
+    showAlert: function(message, title) {
+        if (navigator.notification) {
+            navigator.notification.alert(message, null, title, 'OK');
+        } else {
+            alert(title ? (title + ": " + message) : message);
+        }
+    },
+    slidePage: function(page) {
+        var currentPageDest,
+                self = this;
+        // If there is no current page (app just started) -> No transition: Position new page in the view port
+        if (!this.currentPage) {
+            $(page.el).attr('class', 'page stage-center');
+            $('body').append(page.el);
+            this.currentPage = page;
+            return;
+        }
+        // Cleaning up: remove old pages that were moved out of the viewport
+        $('.stage-right, .stage-left').not('.homePage').remove();
+        if (page === app.homePage) {
+            // Always apply a Back transition (slide from left) when we go back to the search page
+            $(page.el).attr('class', 'page stage-left');
+            currentPageDest = "stage-right";
+        } else {
+            // Forward transition (slide from right)
+            $(page.el).attr('class', 'page stage-right');
+            currentPageDest = "stage-left";
+        }
+        $('body').append(page.el);
+        // Wait until the new page has been added to the DOM...
+        setTimeout(function() {
+            // Slide out the current page: If new page slides from the right -> slide current page to the left, and vice versa
+            $(self.currentPage.el).attr('class', 'page transition ' + currentPageDest);
+            // Slide in the new page
+            $(page.el).attr('class', 'page stage-center transition');
+            self.currentPage = page;
+        });
+    },
+    getLogged: function() {
+        if (!this.logged) {
+            return false;
+        } else
+            return true;
+    },
+    route: function() {
+        var self = this;
+        var hash = window.location.hash;
+        if (!hash) {
+            if (this.getLogged()) {
+                if (this.homePage) {
+                    alert('loaded')
+                    this.slidePage(this.homePage);
+                } else {
+                    this.homePage = new HomeView(this.store).render();
+                    this.slidePage(this.homePage);
+                }
+            } else {
+                if (this.loginPage) {
+                    this.slidePage(this.loginPage);
+                } else {
+                    this.loginPage = new LoginView(this.store).render();
+                    this.slidePage(this.loginPage);
+                }
+            }
+            return;
+        }
+        var match = hash.match(this.detailsURL);
+        if (match) {
+            this.store.findById(Number(match[1]), function(employee) {
+                self.slidePage(new EmployeeView(employee).render());
+            });
+        }
+    },
     initialize: function() {
-        this.bindEvents();
-    },
-    // Bind Event Listeners
-    //
-    // Bind any events that are required on startup. Common events are:
-    // 'load', 'deviceready', 'offline', and 'online'.
-    bindEvents: function() {
-        document.addEventListener('deviceready', this.onDeviceReady, false);
-    },
-    // deviceready Event Handler
-    //
-    // The scope of 'this' is the event. In order to call the 'receivedEvent'
-    // function, we must explicity call 'app.receivedEvent(...);'
-    onDeviceReady: function() {
-        app.receivedEvent('deviceready');
-    },
-    // Update DOM on a Received Event
-    receivedEvent: function(id) {
-        var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
-
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
-        
-        //console.log('Received Event: ' + id);
+        var self = this;
+        //self.registerEvents();
+        self.detailsURL = /^#zab\/(\d{1,})/;
+        $(window).on('hashchange', $.proxy(self.route, self));
+        app.popup = new PopupView();
+        $('#login-zaboca-main_popup').html(app.popup.el);
+        /*function doOnOrientationChange()
+        {
+            switch (window.orientation)
+            {
+                case -90:
+                case 90:
+                    alert('landscape');
+                    break;
+                default:
+                    alert('portrait');
+                    break;
+            }
+        }
+        window.addEventListener('orientationchange', doOnOrientationChange);
+*/
+        self.route();
     }
 };
+
+Handlebars.registerHelper('ifCond', function(v1, v2, options) {
+    if (v1 === v2) {
+        return options.fn(this);
+    }
+    return options.inverse(this);
+});
+
+app.initialize();
+
